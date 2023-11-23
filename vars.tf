@@ -1,0 +1,12 @@
+variable "elasticache_type" {}
+variable "tags" {}
+variable "env" {}
+variable "subnet_ids" {}
+variable "family" {}
+variable "sg_ingress_cidr" {}
+variable "vpc_id" {}
+variable "port" {}
+variable "engine" {}
+variable "node_type" {}
+variable "num_cache_nodes" {}
+variable "engine_version" {}
