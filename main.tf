@@ -7,7 +7,7 @@ resource "aws_elasticache_subnet_group" "main" {
 resource "aws_elasticache_parameter_group" "main" {
   name   = "${local.name_prefix}-pg"
   family = var.family
-  tags   = merge(local.tags, { Name = "${local.name_prefix}-pg" })
+  tags       = merge(local.tags, { Name = "${local.name_prefix}-pg" })
 }
 
 resource "aws_security_group" "main" {
