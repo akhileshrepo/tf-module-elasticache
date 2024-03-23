@@ -1,14 +1,20 @@
 resource "aws_elasticache_subnet_group" "main" {
   name       = "${local.name_prefix}-subnet-group"
   subnet_ids = var.subnet_ids
-  tags = merge(local.tags, {Name = "${local.name_prefix}-subnet-group"})
+  tags       = merge(local.tags, { Name = "${local.name_prefix}-subnet-group" })
+}
+
+resource "aws_elasticache_parameter_group" "main" {
+  name   = "${local.name_prefix}-pg"
+  family = var.family
+  tags   = merge(local.tags, { Name = "${local.name_prefix}-pg" })
 }
 
 resource "aws_security_group" "main" {
-  name          = "${local.name_prefix}-sg"
-  description   = "${local.name_prefix}-sg"
-  vpc_id        = var.vpc_id
-  tags          = merge(local.tags, { Name = "${local.name_prefix}-sg" })
+  name        = "${local.name_prefix}-sg"
+  description = "${local.name_prefix}-sg"
+  vpc_id      = var.vpc_id
+  tags        = merge(local.tags, { Name = "${local.name_prefix}-sg" })
 
   ingress {
     description = "ELASTICACHE"
@@ -27,22 +33,15 @@ resource "aws_security_group" "main" {
   }
 }
 
-resource "aws_db_parameter_group" "main" {
-  name        = "${local.name_prefix}-pg"
-  family      = var.family
-  tags        = merge(local.tags, { Name = "${local.name_prefix}-pg" })
-}
-
-
 resource "aws_elasticache_cluster" "main" {
   cluster_id           = "${local.name_prefix}-cluster"
   engine               = var.engine
   node_type            = var.node_type
   num_cache_nodes      = var.num_cache_nodes
-  parameter_group_name = aws_db_parameter_group.main.name
+  parameter_group_name = aws_elasticache_parameter_group.main.name
   engine_version       = var.engine_version
   port                 = var.port
-  subnet_group_name = aws_elasticache_subnet_group.main.name
-  security_group_ids = [aws_security_group.main.id]
-  tags = merge(local.tags, {Name = "${local.name_prefix}-cluster"})
+  subnet_group_name    = aws_elasticache_subnet_group.main.name
+  security_group_ids   = [aws_security_group.main.id]
+  tags                 = merge(local.tags, { Name = "${local.name_prefix}-cluster" })
 }
