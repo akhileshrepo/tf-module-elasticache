@@ -33,7 +33,7 @@ resource "aws_elasticache_parameter_group" "main" {
   tags                          = merge(local.tags, { Name = "${local.name_prefix}-pg" })
 }
 
-resource "aws_elasticache_cluster" "example" {
+resource "aws_elasticache_cluster" "main" {
   cluster_id                    = "${local.name_prefix}-cluster"
   engine                        = var.engine
   node_type                     = var.node_type
